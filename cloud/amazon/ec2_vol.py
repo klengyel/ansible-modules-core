@@ -519,15 +519,7 @@ def main():
     # Set changed flag
     changed = False
 
-    region, ec2_url, aws_connect_params = get_aws_connection_info(module)
-
-    if region:
-        try:
-            ec2 = connect_to_aws(boto.ec2, region, **aws_connect_params)
-        except (boto.exception.NoAuthHandlerFound, AnsibleAWSError) as e:
-            module.fail_json(msg=str(e))
-    else:
-        module.fail_json(msg="region must be specified")
+    ec2 = ec2_connect(module)
 
     if state == 'list':
         returned_volumes = []
